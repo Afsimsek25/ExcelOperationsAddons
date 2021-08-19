@@ -12,20 +12,23 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+
 import java.io.FileInputStream;
-import java.io.IOException;
 
+@Action(name = "Get Data From Excel",description = "Get Data value from an Excel file using specific Column and Row index", summary = "Get Data From Excel")
+public class getData implements WebAction {
 
-@Action(name = "Read Excel Column",description = "Read column value from an Excel file using specific index")
-public class readColumnValue implements WebAction {
     @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)")
     int Sheet;
+    @Parameter(direction = ParameterDirection.INPUT, description = "Row Index in Excel (starting from one)")
+    int Row;
     @Parameter(direction = ParameterDirection.INPUT, description = "Column Index in Excel (starting from one)")
     int Col;
     @Parameter(direction = ParameterDirection.INPUT, description = "Path to the Excel file")
     String filePath;
     @Parameter(direction = ParameterDirection.OUTPUT, description = "The value inside the column cells")
-    String columnValue;
+    String Value;
+
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
@@ -39,23 +42,16 @@ public class readColumnValue implements WebAction {
         assert workbook != null;
         Sheet sheet = workbook.getSheetAt(Sheet-1);
         int rowCount = sheet.getPhysicalNumberOfRows();
-        columnValue=" ";
-        for (int i = 1; i < rowCount; i++) {
-            Row row = sheet.getRow(i);
-
-            columnValue+=row.getCell(Col-1) + ",";
-            columnValue=columnValue.trim();
-            if (row.getCell(Col-1).toString().length()<=0) {
-                columnValue="EMPTY";
-                reporter.result(String.format("No value found in the provided index: \"" + Col + "\""));
-                return ExecutionResult.FAILED;
-            }
-        }
-        try {
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        Value=" ";
+        Row row = sheet.getRow(Row);
+        Value+=row.getCell(Col);
+        Value=Value.trim();
+        if (Value.length()<=0){
+            Value="EMPTY";
+            reporter.result(String.format("No value found in the provided index: \"" + Col + Row+"\""));
+            return ExecutionResult.FAILED;
         }
         return ExecutionResult.PASSED;
+
     }
 }

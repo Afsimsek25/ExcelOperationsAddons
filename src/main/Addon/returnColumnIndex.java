@@ -18,6 +18,8 @@ import java.io.IOException;
 @Action(name="Get Excel Column Index",description = "Get column index from an Excel file using specific text")
 public class returnColumnIndex implements WebAction {
 
+    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)")
+    int Sheet;
     @Parameter(direction = ParameterDirection.INPUT,description = "Path to the Excel file")
     String filePath;
     @Parameter(direction = ParameterDirection.INPUT,description = "The text to search in the Columns")
@@ -36,7 +38,7 @@ public class returnColumnIndex implements WebAction {
         }
 
         assert workbook != null;
-        Sheet sheet = workbook.getSheetAt(0);
+        Sheet sheet = workbook.getSheetAt(Sheet-1);
         Row row = sheet.getRow(0);
         int cellCount = row.getPhysicalNumberOfCells();
         for (int i = 0; i <cellCount ; i++) {
