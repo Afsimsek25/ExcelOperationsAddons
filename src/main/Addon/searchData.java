@@ -12,11 +12,11 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
 
-@Action(name = "Read Excel Column",description = "Read column value from an Excel file using specific index")
+@Action(name = "Search Data From Excel", description = "Search Data From Excel", summary = "Returns the row and column number of the searched data")
 public class searchData implements WebAction {
     @Parameter(direction = ParameterDirection.INPUT, description = "Path to the Excel file")
     String filePath;
-    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)")
+    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)", defaultValue = "1")
     int Sheet;
     @Parameter(direction = ParameterDirection.INPUT, description = "Searched Text in The All Data")
     String TextToSearch;
@@ -36,27 +36,22 @@ public class searchData implements WebAction {
         } catch (Exception ex) {
         }
         assert workbook != null;
-        Sheet sheet = workbook.getSheetAt(Sheet-1);
-        int rowCount = sheet.getPhysicalNumberOfRows();
+        Sheet sheet = workbook.getSheetAt(Sheet - 1);
 
-        for(int i=0; i< rowCount; i++)
-        {
-            Row row= sheet.getRow(i);
-            int cellCount=row.getPhysicalNumberOfCells();
-            for(int j=0; j < cellCount;j++ )
-            {
-                if (row.getCell(i).toString().equalsIgnoreCase(TextToSearch)){
-                    Col = i+1;
-                    Row = j+1;
+        int rowCount = sheet.getPhysicalNumberOfRows();
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i);
+            int cellCount = row.getPhysicalNumberOfCells();
+
+            for (int j = 0; j < cellCount; j++) {
+                if (row.getCell(j).toString().equals(TextToSearch)) {
+                    Col = j + 1;
+                    Row = i + 1;
                     return ExecutionResult.PASSED;
-                }else {
-                    reporter.result(String.format("No value found matching the requested text : \""+TextToSearch+"\""));
-                    return ExecutionResult.FAILED;
                 }
             }
         }
-
-
-        return null;
+        reporter.result(String.format("No value found matching the requested text : \"" + TextToSearch + "\""));
+        return ExecutionResult.FAILED;
     }
 }

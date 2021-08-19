@@ -15,10 +15,10 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-@Action(name="Get Excel Column Index",description = "Get column index from an Excel file using specific text")
+@Action(name="Get Column Index From Excel",description = "Get Excel Column Index",summary = "Get column index from an Excel file using specific text")
 public class returnColumnIndex implements WebAction {
 
-    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)")
+    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)",defaultValue = "1")
     int Sheet;
     @Parameter(direction = ParameterDirection.INPUT,description = "Path to the Excel file")
     String filePath;
