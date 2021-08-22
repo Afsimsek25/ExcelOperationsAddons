@@ -15,7 +15,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-@Action(name="Get Column Index From Excel",description = "Get Excel Column Index",summary = "Get column index from an Excel file using specific text")
+@Action(name="Get Column Index From Excel",description = "Get Excel Column Index",summary = "This action takes a text as input (header) and returns the index number (column) containing the input text.")
 public class returnColumnIndex implements WebAction {
 
     @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")

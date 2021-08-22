@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
 
-@Action(name = "Search Data From Excel", description = "Search Data From Excel", summary = "Returns the row and column number of the searched data")
+@Action(name = "Search Data From Excel", description = "Search Data From Excel", summary = "This action returns the index (row and column) of input text.")
 public class searchData implements WebAction {
     @Parameter(direction = ParameterDirection.INPUT, description = "Path to the Excel file")
     String filePath;

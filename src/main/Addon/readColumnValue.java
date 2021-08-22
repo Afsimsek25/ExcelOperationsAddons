@@ -16,7 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 
-@Action(name = "Read Column Values From Excel",description = "Read Excel Column",summary = "Read column value from an Excel file using specific index")
+@Action(name = "Read Column Values From Excel",description = "Read Excel Column",summary = "This action combines and returns all values in the index-given column.")
 public class readColumnValue implements WebAction {
     @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")
     int Sheet=1;

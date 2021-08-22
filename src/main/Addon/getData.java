@@ -15,7 +15,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.FileInputStream;
 
-@Action(name = "Get Data From Excel",description = "Get Data From Excel", summary = "Get Data value from an Excel file using specific Column and Row index")
+@Action(name = "Get Data From Excel",description = "Get Data From Excel", summary = "This action takes index number (row, column) and returns the cell contents.")
 public class getData implements WebAction {
 
     @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")
