@@ -18,7 +18,7 @@ import java.io.FileInputStream;
 @Action(name = "Get Data From Excel",description = "Get Data From Excel", summary = "Get Data value from an Excel file using specific Column and Row index")
 public class getData implements WebAction {
 
-    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)",defaultValue = "1")
+    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")
     int Sheet;
     @Parameter(direction = ParameterDirection.INPUT, description = "Row Index in Excel (starting from one)")
     int Row;
@@ -30,8 +30,13 @@ public class getData implements WebAction {
     String Value;
 
 
+
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
+
+        if (Sheet<1){
+            Sheet=1;
+        }
         Reporter reporter = helper.getReporter();
         Workbook workbook = null;
         try {
@@ -41,10 +46,9 @@ public class getData implements WebAction {
         }
         assert workbook != null;
         Sheet sheet = workbook.getSheetAt(Sheet-1);
-        int rowCount = sheet.getPhysicalNumberOfRows();
         Value=" ";
-        Row row = sheet.getRow(Row);
-        Value+=row.getCell(Col);
+        Row row = sheet.getRow(Row-1);
+        Value+=row.getCell(Col-1);
         Value=Value.trim();
         if (Value.length()<=0){
             Value="EMPTY";

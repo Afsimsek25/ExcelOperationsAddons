@@ -18,8 +18,8 @@ import java.io.IOException;
 @Action(name="Get Column Index From Excel",description = "Get Excel Column Index",summary = "Get column index from an Excel file using specific text")
 public class returnColumnIndex implements WebAction {
 
-    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)",defaultValue = "1")
-    int Sheet;
+    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")
+    int Sheet=1;
     @Parameter(direction = ParameterDirection.INPUT,description = "Path to the Excel file")
     String filePath;
     @Parameter(direction = ParameterDirection.INPUT,description = "The text to search in the Columns")
@@ -29,6 +29,9 @@ public class returnColumnIndex implements WebAction {
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
+        if (Sheet<1){
+            Sheet=1;
+        }
         Reporter reporter = helper.getReporter();
         Workbook workbook = null;
         try {

@@ -16,8 +16,8 @@ import java.io.FileInputStream;
 public class searchData implements WebAction {
     @Parameter(direction = ParameterDirection.INPUT, description = "Path to the Excel file")
     String filePath;
-    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)", defaultValue = "1")
-    int Sheet;
+    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1", defaultValue = "1")
+    int Sheet=1;
     @Parameter(direction = ParameterDirection.INPUT, description = "Searched Text in The All Data")
     String TextToSearch;
     @Parameter(direction = ParameterDirection.OUTPUT, description = "Row Index in Excel (starting from one)")
@@ -27,7 +27,9 @@ public class searchData implements WebAction {
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
-
+        if (Sheet<1){
+            Sheet=1;
+        }
         Reporter reporter = helper.getReporter();
         Workbook workbook = null;
         try {

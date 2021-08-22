@@ -18,8 +18,8 @@ import java.io.IOException;
 
 @Action(name = "Read Column Values From Excel",description = "Read Excel Column",summary = "Read column value from an Excel file using specific index")
 public class readColumnValue implements WebAction {
-    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one)",defaultValue = "1")
-    int Sheet;
+    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")
+    int Sheet=1;
     @Parameter(direction = ParameterDirection.INPUT, description = "Column Index in Excel (starting from one)")
     int Col;
     @Parameter(direction = ParameterDirection.INPUT, description = "Path to the Excel file")
@@ -29,6 +29,9 @@ public class readColumnValue implements WebAction {
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
+        if (Sheet<1){
+            Sheet=1;
+        }
         Reporter reporter = helper.getReporter();
         Workbook workbook = null;
         try {
