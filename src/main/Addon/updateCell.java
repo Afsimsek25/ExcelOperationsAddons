@@ -30,6 +30,11 @@ public class updateCell implements WebAction {
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper)throws FailureException {
+        if (Sheet<1){
+            Sheet=1;
+        }else{
+            Sheet-=1;
+        }
         Reporter reporter = helper.getReporter();
         Workbook workbook = null;
         FileInputStream inputStream = null;
