@@ -6,29 +6,30 @@ import io.testproject.java.enums.ParameterDirection;
 import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
+import io.testproject.java.sdk.v2.exceptions.FailureException;
 import io.testproject.java.sdk.v2.reporters.Reporter;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
-@Action(name = "Get Sum Of The Column Values", description = "Get Sum Of The Column Values", summary = "This Action Return The Sum Of The Column Values")
-public class getSumOfTheColumnValues implements WebAction {
-
+@Action(name = "Read Row Values From Excel", description = "Read Excel Row", summary = "This action combines and returns all values in the index-given row.")
+public class readRowValue implements WebAction {
     @Parameter(direction = ParameterDirection.INPUT, description = "Path to the Excel file")
     String filePath;
     @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1", defaultValue = "1")
-    int Sheet;
-    @Parameter(direction = ParameterDirection.INPUT, description = "Column Index in Excel (starting from one)")
-    int Col;
-    @Parameter(direction = ParameterDirection.OUTPUT, description = "The value inside the column cells")
-    double columnValue;
+    int Sheet = 1;
+    @Parameter(direction = ParameterDirection.INPUT, description = "Row Index in Excel (starting from one)")
+    int Row;
+    @Parameter(direction = ParameterDirection.OUTPUT, description = "The values inside the cells in the row")
+    String rowValue;
 
     @Override
-    public ExecutionResult execute(WebAddonHelper helper){
-        if (Sheet <=0) {
+    public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
+        if (Sheet < 1) {
             Sheet = 1;
         }
         Reporter reporter = helper.getReporter();
@@ -39,25 +40,25 @@ public class getSumOfTheColumnValues implements WebAction {
         } catch (Exception ex) {
         }
         assert workbook != null;
-        org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(Sheet - 1);
-        int rowCount = sheet.getPhysicalNumberOfRows();
+        Sheet sheet = workbook.getSheetAt(Sheet - 1);
+        rowValue = " ";
+        Row row = sheet.getRow(Row);
+        int cellCount = row.getPhysicalNumberOfCells();
 
-        columnValue=0.0;
-        try {
-            for (int i = 1; i < rowCount - 1; i++) {
-                Row row = sheet.getRow(i);
-                double currentValue = row.getCell(Col - 1).getNumericCellValue();
-                columnValue += currentValue;
+
+        for (int i = 0; i <cellCount; i++) {
+            if (row.getCell(i).toString().length() <= 0) {
+                rowValue += " " + ",";
+                rowValue = rowValue.trim();
+            }else {
+                rowValue += row.getCell(i) + ",";
+                rowValue = rowValue.trim();
             }
-
-        }catch (Exception e){
-            reporter.result("Satır 54 "+e);
-            return ExecutionResult.FAILED;
         }
         try {
             workbook.close();
         } catch (IOException e) {
-            reporter.result("Satır 60 " +e);;
+            e.printStackTrace();
         }
         return ExecutionResult.PASSED;
     }
