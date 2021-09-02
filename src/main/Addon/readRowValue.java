@@ -6,7 +6,6 @@ import io.testproject.java.enums.ParameterDirection;
 import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
-import io.testproject.java.sdk.v2.exceptions.FailureException;
 import io.testproject.java.sdk.v2.reporters.Reporter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -28,7 +27,7 @@ public class readRowValue implements WebAction {
     String rowValue;
 
     @Override
-    public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
+    public ExecutionResult execute(WebAddonHelper helper){
         if (Sheet < 1) {
             Sheet = 1;
         }
@@ -37,20 +36,16 @@ public class readRowValue implements WebAction {
         try {
             FileInputStream inputStream = new FileInputStream(filePath);
             workbook = WorkbookFactory.create(inputStream);
-        } catch (Exception ex) {
+        } catch (Exception e) {
+            reporter.result(e.toString());
         }
         assert workbook != null;
         Sheet sheet = workbook.getSheetAt(Sheet - 1);
         rowValue = " ";
-        Row row = sheet.getRow(Row);
+        Row row = sheet.getRow(Row-1);
         int cellCount = row.getPhysicalNumberOfCells();
-
-
         for (int i = 0; i <cellCount; i++) {
-            if (row.getCell(i).toString().length() <= 0) {
-                rowValue += " " + ",";
-                rowValue = rowValue.trim();
-            }else {
+            if (row.getCell(i).toString().length()>0) {
                 rowValue += row.getCell(i) + ",";
                 rowValue = rowValue.trim();
             }
@@ -58,7 +53,7 @@ public class readRowValue implements WebAction {
         try {
             workbook.close();
         } catch (IOException e) {
-            e.printStackTrace();
+           reporter.result(e.toString());
         }
         return ExecutionResult.PASSED;
     }
