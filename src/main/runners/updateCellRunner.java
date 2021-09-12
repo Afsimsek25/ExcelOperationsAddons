@@ -1,22 +1,20 @@
-package main.Runners;
+package main.runners;
 
 import io.testproject.java.classes.DriverSettings;
 import io.testproject.java.enums.DriverType;
 import io.testproject.java.sdk.v2.Runner;
 import io.testproject.java.sdk.v2.drivers.WebDriver;
-import main.Addon.readColumnValue;
+import main.addon.updateCell;
 
-public class readColumnValueRunner {
+public class updateCellRunner {
     private  final static String devToken="4FPXDZg2cWzyPlh4CL9QAK1ci4rHDCS-7uD_A-YUDeY1";
     public static void main(String[] args)  throws Exception{
         DriverSettings driverSettings = new DriverSettings(DriverType.Chrome);
         try(Runner runner = new Runner(devToken,driverSettings)){
-            readColumnValue readColumnValue = new readColumnValue();
-            WebDriver driver = runner.getDriver(readColumnValue);
-            runner.run(readColumnValue);
+            updateCell updateCell = new updateCell();
+            WebDriver driver = runner.getDriver(updateCell);
+            runner.run(updateCell);
         }
 
     }
-
-
 }

@@ -1,4 +1,4 @@
-package main.Addon;
+package main.addon;
 
 import io.testproject.java.annotations.v2.Action;
 import io.testproject.java.annotations.v2.Parameter;

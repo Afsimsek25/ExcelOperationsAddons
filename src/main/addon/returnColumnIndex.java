@@ -1,4 +1,4 @@
-package main.Addon;
+package main.addon;
 
 import io.testproject.java.annotations.v2.Action;
 import io.testproject.java.annotations.v2.Parameter;
@@ -15,17 +15,17 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+@Action(name="Get Column Index From Excel",description = "Get Excel Column Index",summary = "This action takes a text as input (header) and returns the index number (column) containing the input text.")
+public class returnColumnIndex implements WebAction {
 
-@Action(name = "Read Column Values From Excel",description = "Read Excel Column",summary = "This action combines and returns all values in the index-given column.")
-public class readColumnValue implements WebAction {
     @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")
     int Sheet=1;
-    @Parameter(direction = ParameterDirection.INPUT, description = "Column Index in Excel (starting from one)")
-    int Col;
-    @Parameter(direction = ParameterDirection.INPUT, description = "Path to the Excel file")
+    @Parameter(direction = ParameterDirection.INPUT,description = "Path to the Excel file")
     String filePath;
-    @Parameter(direction = ParameterDirection.OUTPUT, description = "The value inside the column cells")
-    String columnValue;
+    @Parameter(direction = ParameterDirection.INPUT,description = "The text to search in the Columns")
+    String textToSearch;
+    @Parameter(direction = ParameterDirection.OUTPUT,description = "Column Index in Excel (starting from one)")
+    int Col;
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
@@ -39,26 +39,24 @@ public class readColumnValue implements WebAction {
             workbook = WorkbookFactory.create(inputStream);
         } catch (Exception ex) {
         }
+
         assert workbook != null;
         Sheet sheet = workbook.getSheetAt(Sheet-1);
-        int rowCount = sheet.getPhysicalNumberOfRows();
-        columnValue=" ";
-        for (int i = 1; i < rowCount; i++) {
-            Row row = sheet.getRow(i);
-
-            columnValue+=row.getCell(Col-1) + ",";
-            columnValue=columnValue.trim();
-            if (row.getCell(Col-1).toString().length()<=0) {
-                columnValue="EMPTY";
-                reporter.result(String.format("No value found in the provided index: \"" + Col + "\""));
-                return ExecutionResult.FAILED;
+        Row row = sheet.getRow(0);
+        int cellCount = row.getPhysicalNumberOfCells();
+        for (int i = 0; i <cellCount ; i++) {
+            if (row.getCell(i).toString().equalsIgnoreCase(textToSearch)) {
+                Col=i+1;
+                return ExecutionResult.PASSED;
+            }
+            try {
+                workbook.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        try {
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ExecutionResult.PASSED;
+        reporter.result(String.format("No value found matching the requested text : \""+textToSearch+"\""));
+        return ExecutionResult.FAILED;
     }
+
 }

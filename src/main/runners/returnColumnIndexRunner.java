@@ -1,19 +1,19 @@
-package main.Runners;
+package main.runners;
 
 import io.testproject.java.classes.DriverSettings;
 import io.testproject.java.enums.DriverType;
 import io.testproject.java.sdk.v2.Runner;
 import io.testproject.java.sdk.v2.drivers.WebDriver;
-import main.Addon.readRowValue;
+import main.addon.returnColumnIndex;
 
-public class readRowValueRunner {
+public class returnColumnIndexRunner {
     private  final static String devToken="4FPXDZg2cWzyPlh4CL9QAK1ci4rHDCS-7uD_A-YUDeY1";
     public static void main(String[] args)  throws Exception{
         DriverSettings driverSettings = new DriverSettings(DriverType.Chrome);
-        try(Runner runner = new Runner(devToken,driverSettings)){
-            readRowValue readRowValue = new readRowValue();
-            WebDriver driver = runner.getDriver(readRowValue);
-            runner.run(readRowValue);
+       try(Runner runner = new Runner(devToken,driverSettings)){
+            returnColumnIndex returnColumnIndex = new returnColumnIndex();
+            WebDriver driver = runner.getDriver(returnColumnIndex);
+            runner.run(returnColumnIndex);
         }
 
     }
