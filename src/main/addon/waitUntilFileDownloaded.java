@@ -10,16 +10,14 @@ import io.testproject.java.sdk.v2.reporters.Reporter;
 
 import java.io.File;
 
-@Action(name = "Wait Until File Exist",description = "Wait Until File Exist",summary = "This Action Waits Until The Downloaded File Appears In The System")
-public class waitUntilFileExist implements WebAction {
-
-    @Parameter(direction = ParameterDirection.INPUT, description = "Path to the Excel file")
+@Action(name = "Wait Until The File is Downloaded",description = "Wait Until The File is Downloaded",summary = "This Action Waits Until The Downloaded File Appears In The System")
+public class waitUntilFileDownloaded implements WebAction {
+    @Parameter(direction = ParameterDirection.INPUT, description = "Path to the file")
     String filePath;
-    @Parameter(direction = ParameterDirection.INPUT, description = "timeout in milliseconds")
+    @Parameter(direction = ParameterDirection.INPUT, description = "Timeout in milliseconds")
     int Timeout;
     @Parameter(direction = ParameterDirection.OUTPUT, description = "Process result (true/false)")
     boolean result;
-
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper){
@@ -38,7 +36,7 @@ public class waitUntilFileExist implements WebAction {
             i++;
             result = file.exists();
         }
-        reporter.result(Timeout+" Miktarınca bekledik ne gelen var ne giden.");
+        reporter.result(" We waited "+Timeout+" milliseconds but we couldn't find the file.");
         return ExecutionResult.FAILED;
 
     }

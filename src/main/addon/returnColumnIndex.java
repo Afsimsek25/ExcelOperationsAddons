@@ -17,11 +17,10 @@ import java.io.IOException;
 
 @Action(name="Get Column Index From Excel",description = "Get Excel Column Index",summary = "This action takes a text as input (header) and returns the index number (column) containing the input text.")
 public class returnColumnIndex implements WebAction {
-
-    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")
-    int Sheet=1;
     @Parameter(direction = ParameterDirection.INPUT,description = "Path to the Excel file")
     String filePath;
+    @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")
+    int Sheet=1;
     @Parameter(direction = ParameterDirection.INPUT,description = "The text to search in the Columns")
     String textToSearch;
     @Parameter(direction = ParameterDirection.OUTPUT,description = "Column Index in Excel (starting from one)")
