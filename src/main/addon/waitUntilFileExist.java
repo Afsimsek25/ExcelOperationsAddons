@@ -6,7 +6,7 @@ import io.testproject.java.enums.ParameterDirection;
 import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
-import io.testproject.java.sdk.v2.exceptions.FailureException;
+import io.testproject.java.sdk.v2.reporters.Reporter;
 
 import java.io.File;
 
@@ -23,6 +23,7 @@ public class waitUntilFileExist implements WebAction {
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper){
+        Reporter reporter = helper.getReporter();
         File file = new File(filePath);
         result = file.exists();
         for (int i = 0; i <Timeout;) {
@@ -35,7 +36,10 @@ public class waitUntilFileExist implements WebAction {
                 e.printStackTrace();
             }
             i++;
+            result = file.exists();
         }
+        reporter.result(Timeout+" Miktarınca bekledik ne gelen var ne giden.");
         return ExecutionResult.FAILED;
+
     }
 }
