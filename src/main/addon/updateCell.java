@@ -6,11 +6,12 @@ import io.testproject.java.enums.ParameterDirection;
 import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
-import io.testproject.java.sdk.v2.exceptions.FailureException;
 import io.testproject.java.sdk.v2.reporters.Reporter;
 import org.apache.poi.ss.usermodel.*;
-
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 @Action(name = "Update a specific cell in the Excel file",description = "Update a specific cell in the Excel file",summary = "Updates a Excel file at specified row and column")
@@ -27,7 +28,7 @@ public class updateCell implements WebAction {
     String value;
 
     @Override
-    public ExecutionResult execute(WebAddonHelper helper)throws FailureException {
+    public ExecutionResult execute(WebAddonHelper helper){
         if (Sheet<1){
             Sheet=1;
         }else{
@@ -57,7 +58,7 @@ public class updateCell implements WebAction {
             reporter.result(e.toString());
             return ExecutionResult.FAILED;
         }
-        FileOutputStream outputStream = null;
+        FileOutputStream outputStream;
         try {
             outputStream = new FileOutputStream(filePath);
         } catch (FileNotFoundException e) {
@@ -76,7 +77,11 @@ public class updateCell implements WebAction {
             reporter.result(e.toString());
             return ExecutionResult.FAILED;
         }
+        try {
+            workbook.close();
+        } catch (IOException e) {
+            reporter.result(e.toString());
+        }
         return ExecutionResult.PASSED;
     }
-
 }

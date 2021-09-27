@@ -6,7 +6,6 @@ import io.testproject.java.enums.ParameterDirection;
 import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
-import io.testproject.java.sdk.v2.exceptions.FailureException;
 import io.testproject.java.sdk.v2.reporters.Reporter;
 
 import java.io.File;
@@ -23,7 +22,7 @@ public class deleteFile implements WebAction {
     boolean result;
 
     @Override
-    public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
+    public ExecutionResult execute(WebAddonHelper helper){
         Reporter reporter = helper.getReporter();
 
         File file = new File(filePath);

@@ -6,11 +6,11 @@ import io.testproject.java.enums.ParameterDirection;
 import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
-import io.testproject.java.sdk.v2.exceptions.FailureException;
 import io.testproject.java.sdk.v2.reporters.Reporter;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 
 @Action(name = "Search Data From Excel", description = "Search Data From Excel", summary = "This action returns the index (row and column) of input text.")
 public class searchData implements WebAction {
@@ -26,17 +26,18 @@ public class searchData implements WebAction {
     int Col;
 
     @Override
-    public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
-
+    public ExecutionResult execute(WebAddonHelper helper){
         if (Sheet<1){
             Sheet=1;
         }
         Reporter reporter = helper.getReporter();
         Workbook workbook = null;
+        FileInputStream inputStream = null;
         try {
-            FileInputStream inputStream = new FileInputStream(filePath);
+            inputStream = new FileInputStream(filePath);
             workbook = WorkbookFactory.create(inputStream);
-        } catch (Exception ex) {
+        } catch (Exception e) {
+            reporter.result(e.toString());
         }
         assert workbook != null;
         Sheet sheet = workbook.getSheetAt(Sheet - 1);
@@ -54,7 +55,19 @@ public class searchData implements WebAction {
                 }
             }
         }
-        reporter.result(String.format("No value found matching the requested text : \"" + TextToSearch + "\""));
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            reporter.result(e.toString());
+            return ExecutionResult.FAILED;
+        }
+        try {
+            workbook.close();
+        } catch (IOException e) {
+            reporter.result(e.toString());
+        }
+
+        reporter.result("No value found matching the requested text : \"" + TextToSearch + "\"");
         return ExecutionResult.FAILED;
     }
 }

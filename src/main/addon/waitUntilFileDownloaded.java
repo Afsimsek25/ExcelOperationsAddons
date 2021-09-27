@@ -12,12 +12,14 @@ import java.io.File;
 
 @Action(name = "Wait Until The File is Downloaded",description = "Wait Until The File is Downloaded",summary = "This Action Waits Until The Downloaded File Appears In The System")
 public class waitUntilFileDownloaded implements WebAction {
+
     @Parameter(direction = ParameterDirection.INPUT, description = "Path to the file")
     String filePath;
-    @Parameter(direction = ParameterDirection.INPUT, description = "Timeout in milliseconds")
+    @Parameter(direction = ParameterDirection.INPUT, description = "timeout in seconds")
     int Timeout;
     @Parameter(direction = ParameterDirection.OUTPUT, description = "Process result (true/false)")
     boolean result;
+
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper){

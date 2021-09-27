@@ -33,8 +33,9 @@ public class readRowValue implements WebAction {
         }
         Reporter reporter = helper.getReporter();
         Workbook workbook = null;
+        FileInputStream inputStream = null;
         try {
-            FileInputStream inputStream = new FileInputStream(filePath);
+            inputStream = new FileInputStream(filePath);
             workbook = WorkbookFactory.create(inputStream);
         } catch (Exception e) {
             reporter.result(e.toString());
@@ -51,9 +52,15 @@ public class readRowValue implements WebAction {
             }
         }
         try {
+            inputStream.close();
+        } catch (IOException e) {
+            reporter.result(e.toString());
+            return ExecutionResult.FAILED;
+        }
+        try {
             workbook.close();
         } catch (IOException e) {
-           reporter.result(e.toString());
+            reporter.result(e.toString());
         }
         return ExecutionResult.PASSED;
     }

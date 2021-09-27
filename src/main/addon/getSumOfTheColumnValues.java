@@ -33,10 +33,12 @@ public class getSumOfTheColumnValues implements WebAction {
         }
         Reporter reporter = helper.getReporter();
         Workbook workbook = null;
+        FileInputStream inputStream = null;
         try {
-            FileInputStream inputStream = new FileInputStream(filePath);
+            inputStream = new FileInputStream(filePath);
             workbook = WorkbookFactory.create(inputStream);
-        } catch (Exception ex) {
+        } catch (Exception e) {
+            reporter.result(e.toString());
         }
         assert workbook != null;
         org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(Sheet - 1);
@@ -55,9 +57,15 @@ public class getSumOfTheColumnValues implements WebAction {
             return ExecutionResult.FAILED;
         }
         try {
+            inputStream.close();
+        } catch (IOException e) {
+            reporter.result(e.toString());
+            return ExecutionResult.FAILED;
+        }
+        try {
             workbook.close();
         } catch (IOException e) {
-            reporter.result("Satır 60 " +e);;
+            reporter.result(e.toString());
         }
         return ExecutionResult.PASSED;
     }
