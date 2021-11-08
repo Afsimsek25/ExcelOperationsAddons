@@ -23,6 +23,8 @@ public class waitUntilFileDownloaded implements WebAction {
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper){
+        String userprofile = System.getenv("USERPROFILE");
+        filePath = filePath.replace("%USERPROFILE%", userprofile);
         Reporter reporter = helper.getReporter();
         File file = new File(filePath);
         result = file.exists();

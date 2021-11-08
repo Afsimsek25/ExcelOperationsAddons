@@ -24,6 +24,8 @@ public class deleteFile implements WebAction {
     @Override
     public ExecutionResult execute(WebAddonHelper helper){
         Reporter reporter = helper.getReporter();
+        String userprofile = System.getenv("USERPROFILE");
+        filePath = filePath.replace("%USERPROFILE%", userprofile);
 
         File file = new File(filePath);
         try {

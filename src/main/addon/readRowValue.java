@@ -28,6 +28,8 @@ public class readRowValue implements WebAction {
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper){
+        String userprofile = System.getenv("USERPROFILE");
+        filePath = filePath.replace("%USERPROFILE%", userprofile);
         if (Sheet < 1) {
             Sheet = 1;
         }
