@@ -19,13 +19,13 @@ import java.io.IOException;
 public class getData implements WebAction {
 
     @Parameter(direction = ParameterDirection.INPUT, description = "Sheet Number in Excel (starting from one), Default 1",defaultValue = "1")
-    int Sheet;
+    int Sheet=1;
     @Parameter(direction = ParameterDirection.INPUT, description = "Row Index in Excel (starting from one)")
-    int Row;
+    int Row=5;
     @Parameter(direction = ParameterDirection.INPUT, description = "Column Index in Excel (starting from one)")
-    int Col;
+    int Col=6;
     @Parameter(direction = ParameterDirection.INPUT, description = "Path to the Excel file")
-    String filePath;
+    String filePath = "%USERPROFILE%/Downloads/Islemler.xlsx";
     @Parameter(direction = ParameterDirection.OUTPUT, description = "The value inside the column cells")
     String Value;
 
@@ -33,6 +33,10 @@ public class getData implements WebAction {
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper){
+        String userprofile = System.getenv("USERPROFILE");
+        if (filePath.startsWith("%USERPROFILE%")){
+            filePath =  filePath.replace("%USERPROFILE%",userprofile);
+        }
         if (Sheet<1){
             Sheet=1;
         }
@@ -51,6 +55,7 @@ public class getData implements WebAction {
         Row row = sheet.getRow(Row-1);
         Value+=row.getCell(Col-1);
         Value=Value.trim();
+        System.out.println(Value);
         if (Value.length()<=0){
             Value="EMPTY";
             reporter.result("No value found in the provided index: \"" + Col + Row+"\"");

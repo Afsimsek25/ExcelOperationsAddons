@@ -7,7 +7,7 @@ import io.testproject.java.sdk.v2.drivers.WebDriver;
 import main.addon.getData;
 
 public class getDataRunner {
-    private  final static String devToken="4FPXDZg2cWzyPlh4CL9QAK1ci4rHDCS-7uD_A-YUDeY1";
+    private  final static String devToken="R8bQ7C2-_WuN5axvQF8WZdDXzzql5r2-2A-DGC3C0pw1";
     public static void main(String[] args)  throws Exception{
         DriverSettings driverSettings = new DriverSettings(DriverType.Chrome);
         try(Runner runner = new Runner(devToken,driverSettings)){
