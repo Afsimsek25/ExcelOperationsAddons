@@ -7,7 +7,7 @@ import io.testproject.java.sdk.v2.drivers.WebDriver;
 import main.addon.deleteFile;
 
 public class deleteFileRunners {
-    private  final static String devToken="4FPXDZg2cWzyPlh4CL9QAK1ci4rHDCS-7uD_A-YUDeY1";
+    private  final static String devToken="wThDxIHw4zNaCydjAhcfe81WrQPYlMBFI7FPwUwV8M41";
     public static void main(String[] args)  throws Exception{
         DriverSettings driverSettings = new DriverSettings(DriverType.Chrome);
         try(Runner runner = new Runner(devToken,driverSettings)){
